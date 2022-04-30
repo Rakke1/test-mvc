@@ -1,0 +1,19 @@
+{
+    "name": "rakke1/test-mvc",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rakke1\\TestMvc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ivan"
+        }
+    ],
+    "require": {
+        "psr/http-message": "^1.0",
+        "psr/http-server-middleware": "^1.0",
+        "psr/http-factory": "^1.0"
+    }
+}
