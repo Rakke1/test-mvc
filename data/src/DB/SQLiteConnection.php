@@ -16,7 +16,9 @@ class SQLiteConnection
     public function connect(): PDO
     {
         if (isset($this->pdo) === false) {
-            $this->pdo = new PDO("sqlite:" . App::$ROOT_DIR . '/db/base.db');
+            $this->pdo = new PDO("sqlite:" . App::$ROOT_DIR . '/db/base.db', '','',[
+                PDO::ATTR_PERSISTENT => true
+            ]);
         }
         return $this->pdo;
     }
