@@ -11,8 +11,9 @@ class SiteController extends Controller
     {
         $limit = 3;
         $offset = $limit * ($pageNum - 1);
-        $todoNum = TodoList::countAll();
-        $todoList = TodoList::getAll($limit, $offset);
+        $todoListModel = new TodoList();
+        $todoList = $todoListModel->getAll($limit, $offset);
+        $todoNum = $todoListModel->countAll();
         $totalPageNum = (int)ceil((float)$todoNum / $limit);
 
         return $this->render('home', [
