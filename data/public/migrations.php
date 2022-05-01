@@ -7,6 +7,8 @@ use Rakke1\TestMvc\Models\User;
 $rootDir = dirname(__DIR__);
 require_once $rootDir . '/vendor/autoload.php';
 $app = new App($rootDir);
+$dotenv = Dotenv\Dotenv::createImmutable($rootDir);
+$dotenv->load();
 
 function createUserTable(PDO $db): void
 {
@@ -63,5 +65,28 @@ EOF;
     }
 }
 
+function addAdminUser(): void
+{
+    $user = new User();
+
+    if ($user->getByUsername($_ENV['ADMIN'])) {
+        echo 'Admin already added</br>';
+        return;
+    }
+
+    $user->loadParams([
+        'username' => $_ENV['ADMIN'],
+        'email'    => $_ENV['ADMIN_EMAIL'],
+        'password' => $_ENV['ADMIN_PASSWORD'],
+        'role'     => User::ROLE_ADMIN,
+    ]);
+    if ($user->save()) {
+        echo 'Admin added successfully</br>';
+    } else {
+        echo 'Admin not added!</br>';
+    }
+}
+
 createUserTable($app->db);
 createTodoListTable($app->db);
+addAdminUser();

@@ -10,7 +10,7 @@ abstract class BaseModel
 {
     abstract public static function getTableName(): string;
 
-    public function fetchOne(PDOStatement $preparedPdo)
+    protected function fetchOne(PDOStatement $preparedPdo)
     {
         try {
             $preparedPdo->execute();
@@ -22,7 +22,7 @@ abstract class BaseModel
         return false;
     }
 
-    public function fetchAll(PDOStatement $preparedPdo): bool|array
+    protected function fetchAll(PDOStatement $preparedPdo): bool|array
     {
         try {
             $preparedPdo->execute();
@@ -34,7 +34,7 @@ abstract class BaseModel
         return false;
     }
 
-    public function prepareSelect(
+    protected function prepareSelect(
         array $whereParams = [],
         ?int $limit = null,
         ?int $offset = null): PDOStatement
@@ -77,7 +77,7 @@ abstract class BaseModel
         return $row['COUNT(*)'] ?? 0;
     }
 
-    public function saveOne(array $params): bool
+    protected function saveOne(array $params): bool
     {
         $tableName = $this::getTableName();
         $paramKeys = implode(',', array_keys($params));

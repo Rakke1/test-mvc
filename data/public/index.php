@@ -1,6 +1,8 @@
 <?php
 
 ini_set('display_errors',1);
+ini_set('session.save_path', realpath(dirname(__DIR__) . '/sessions'));
+session_start();
 
 use Rakke1\TestMvc\App;
 use Rakke1\TestMvc\Route;
@@ -12,7 +14,8 @@ require_once $rootDir . '/vendor/autoload.php';
 
 $app = new App($rootDir);
 $app->router->add(new Route('home', '/', [SiteController::class, 'home']));
-$app->router->add(new Route('login', '/login', [SiteController::class, 'login']));
+$app->router->add(new Route('loginGet', '/login', [SiteController::class, 'loginGet'], ['GET']));
+$app->router->add(new Route('loginPost', '/login', [SiteController::class, 'loginPost'], ['POST']));
 $app->router->add(new Route('newTodo', '/todo', [TodoController::class, 'new'], ['POST']));
 $app->router->add(new Route('viewTodo', '/todo', [TodoController::class, 'view'], ['GET']));
 $app->run();
