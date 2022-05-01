@@ -35,25 +35,27 @@ class Route
         $this->methods = $methods;
     }
 
-    public function match(string $path, string $method): bool
+    public function match(string $pathWithQuery, string $method): bool
     {
+        $path = parse_url($pathWithQuery, PHP_URL_PATH);
         $regexRoutePath = $this->getPath();
-        foreach ($this->getAttributeNames() as $attributeName) {
-            $trimmedAttributeName = trim($attributeName, '{\}');
-            $regexRoutePath = str_replace($attributeName, '(?P<' . $trimmedAttributeName . '>[^/]++)', $regexRoutePath);
-        }
+        $pathMatched = preg_match('#^' . $regexRoutePath . '$#sD', $path, $matches);
+        $methodExist = in_array($method, $this->getMethods(), true);
 
-        $trimmedPath = '/' . rtrim(ltrim(trim($path), '/'), '/');
-        if (in_array($method, $this->getMethods()) && preg_match('#^' . $regexRoutePath . '$#sD', $trimmedPath, $matches)) {
-            $values = array_filter($matches, static function ($key) {
-                return is_string($key);
-            }, ARRAY_FILTER_USE_KEY);
-            foreach ($values as $key => $value) {
-                $this->attributes[$key] = $value;
-            }
+        if ($methodExist && $pathMatched) {
+            $this->parseAttributes($pathWithQuery);
             return true;
         }
         return false;
+    }
+
+    protected function parseAttributes(string $pathWithQuery): void
+    {
+        $queryParams = [];
+        parse_str(parse_url($pathWithQuery, PHP_URL_QUERY), $queryParams);
+        foreach ($queryParams as $key => $param) {
+            $this->setAttribute($key, $param);
+        }
     }
 
     public function getName(): string
@@ -76,23 +78,13 @@ class Route
         return $this->methods;
     }
 
-    public function getAttributeNames(): array
-    {
-        preg_match_all('/{[^}]*}/', $this->path, $matches);
-        $match = reset($matches);
-        if ($match === false) {
-            return [];
-        }
-        return $match;
-    }
-
-    public function hasAttributes(): bool
-    {
-        return $this->getAttributeNames() !== [];
-    }
-
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    public function setAttribute($attribute, $value): void
+    {
+        $this->attributes[$attribute] = $value;
     }
 }

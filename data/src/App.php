@@ -32,7 +32,7 @@ class App
         }
 
         $handler = $route->getHandler();
-        $arguments = $route->getAttributes();
+        $attributes = $route->getAttributes();
         $controllerName = $handler[0];
         $methodName = $handler[1] ?? '';
 
@@ -41,6 +41,6 @@ class App
             $controller = [$controller, $methodName];
         }
 
-        echo $controller(...array_values($arguments));
+        echo $controller(...array_values($attributes));
     }
 }

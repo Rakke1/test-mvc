@@ -4,9 +4,8 @@ namespace Rakke1\TestMvc;
 
 use ArrayObject;
 use Rakke1\TestMvc\Exception\NotFoundException;
-use Psr\Http\Message\ServerRequestInterface;
 
-final class Router implements RouterInterface
+final class Router
 {
     private const NO_ROUTE = 404;
 
@@ -25,15 +24,11 @@ final class Router implements RouterInterface
         return $this;
     }
 
-    public function match(ServerRequestInterface $serverRequest): Route
+    public function matchFromPath(string $pathWithQuery, string $method): Route
     {
-        return $this->matchFromPath($serverRequest->getUri()->getPath(), $serverRequest->getMethod());
-    }
-
-    public function matchFromPath(string $path, string $method): Route
-    {
+        /** @var Route $route */
         foreach ($this->routes as $route) {
-            if ($route->match($path, $method) === false) {
+            if ($route->match($pathWithQuery, $method) === false) {
                 continue;
             }
             return $route;
