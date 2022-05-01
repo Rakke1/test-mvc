@@ -50,7 +50,11 @@ use Rakke1\TestMvc\Models\TodoList;
                 <li class="page-item <?php echo $pageNum <= 1 ? 'Disabled' : '' ?>">
                     <a class="page-link" href="#" onclick="pagination.previousPage()">Предыдущая</a>
                 </li>
-                <?php for ($pageCounter = $pageNum; $pageCounter <= $pageNum + 2; $pageCounter++): ?>
+                <?php for (
+                        $pageCounter = ($pageNum <= 1 ? $pageNum : $pageNum - 1);
+                        $pageCounter <= $pageNum + 1;
+                        $pageCounter++
+                ): ?>
                     <?php if ($totalPageNum < $pageCounter) { break; } ?>
 
                     <li class="page-item <?php echo $pageCounter === $pageNum ? 'Active' : '' ?>">
