@@ -2,6 +2,7 @@
 
 namespace Rakke1\TestMvc;
 
+use PDO;
 use Rakke1\TestMvc\DB\SQLiteConnection;
 use Rakke1\TestMvc\Exception\NotFoundException;
 
@@ -11,7 +12,7 @@ class App
     public static string $ROOT_DIR;
     public Router $router;
     public View $view;
-    public \PDO $db;
+    public PDO $db;
 
     public function __construct(string $rootDir)
     {

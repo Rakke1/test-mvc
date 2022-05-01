@@ -27,7 +27,7 @@ EOF;
         if($response === false){
             echo print_r($db->errorInfo(), true);
         } else {
-            echo "User table created successfully</br>";
+            echo 'User table created successfully</br>';
         }
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -56,7 +56,7 @@ EOF;
         if($response === false){
             echo print_r($db->errorInfo(), true);
         } else {
-            echo "TodoList table created successfully</br>";
+            echo 'TodoList table created successfully</br>';
         }
     } catch (PDOException $e) {
         echo $e->getMessage();
