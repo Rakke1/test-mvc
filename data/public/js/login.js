@@ -16,6 +16,8 @@
             if (result.status == false) {
                 alert(result.message);
                 return;
+            } else {
+                window.location.reload();
             }
         }
     }, true);

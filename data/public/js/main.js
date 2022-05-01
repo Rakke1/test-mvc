@@ -62,5 +62,5 @@ function validateEmail(email) {
 
                 form.classList.add('was-validated')
             }, false)
-        })
+        });
 })()

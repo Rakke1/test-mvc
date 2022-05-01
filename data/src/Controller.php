@@ -20,6 +20,11 @@ class Controller
         $_SESSION['user_id'] = $user_id;
     }
 
+    public function removeUserId(): void
+    {
+        unset($_SESSION['user_id']);
+    }
+
     public function getUserId()
     {
         return $_SESSION['user_id'] ?? null;

@@ -8,11 +8,12 @@ class View
 
     public function renderView($view, array $params = []): bool|string
     {
-        include_once self::$VIEW_PATH . 'layout.php';
-
         foreach ($params as $key => $value) {
             $$key = $value;
         }
+
+        include_once self::$VIEW_PATH . 'layout.php';
+
         ob_start();
         include_once self::$VIEW_PATH . "$view.php";
 

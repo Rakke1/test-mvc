@@ -23,6 +23,7 @@ class SiteController extends Controller
             'pageNum'       => $pageNum,
             'totalPageNum'  => $totalPageNum,
             'limit'         => $limit,
+            'userId'        => $this->getUserId(),
         ]);
     }
 
@@ -53,5 +54,11 @@ class SiteController extends Controller
         $this->setUserId($user['ID']);
 
         return json_encode(['status' => true]);
+    }
+
+    public function logoutPost()
+    {
+        $this->removeUserId();
+        $this->redirect('/');
     }
 }

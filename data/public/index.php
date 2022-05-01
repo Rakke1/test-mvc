@@ -16,6 +16,7 @@ $app = new App($rootDir);
 $app->router->add(new Route('home', '/', [SiteController::class, 'home']));
 $app->router->add(new Route('loginGet', '/login', [SiteController::class, 'loginGet'], ['GET']));
 $app->router->add(new Route('loginPost', '/login', [SiteController::class, 'loginPost'], ['POST']));
+$app->router->add(new Route('logout', '/logout', [SiteController::class, 'logoutPost'], ['POST']));
 $app->router->add(new Route('newTodo', '/todo', [TodoController::class, 'new'], ['POST']));
 $app->router->add(new Route('viewTodo', '/todo', [TodoController::class, 'view'], ['GET']));
 $app->run();
