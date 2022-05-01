@@ -1,16 +1,21 @@
 <?php
-
 ?>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<script src="/js/bootstrap.bundle.min.js"></script>
 
-<ul class="nav">
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">TodoList</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-    </li>
-</ul>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/signin.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TodoList</a>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 <?php

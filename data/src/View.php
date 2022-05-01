@@ -15,6 +15,9 @@ class View
         }
         ob_start();
         include_once self::$VIEW_PATH . "$view.php";
+
+        include_once self::$VIEW_PATH . 'footer.php';
+
         return ob_get_clean();
     }
 }
