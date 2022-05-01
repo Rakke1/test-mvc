@@ -16,6 +16,8 @@ class SiteController extends Controller
         $todoList = $todoListModel->getAll($limit, $offset);
         $todoNum = $todoListModel->countAll();
         $totalPageNum = (int)ceil((float)$todoNum / $limit);
+        $isAuth = $this->isAuth();
+        $isAdmin = $this->isAdmin();
 
         return $this->render('home', [
             'todoList'      => $todoList,
@@ -23,7 +25,8 @@ class SiteController extends Controller
             'pageNum'       => $pageNum,
             'totalPageNum'  => $totalPageNum,
             'limit'         => $limit,
-            'userId'        => $this->getUserId(),
+            'isAuth'        => $isAuth,
+            'isAdmin'       => $isAdmin,
         ]);
     }
 

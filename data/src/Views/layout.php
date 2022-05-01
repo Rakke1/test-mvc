@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a class="nav-link <?php echo $currentPath === '/' ? 'active' : ''; ?> p-2" aria-current="page" href="/">Задачи</a>
             </li>
-            <?php if (isset($userId)): ?>
+            <?php if (isset($isAuth) && $isAuth): ?>
                 <li class="nav-item">
                     <form method="post" class="p-0 m-0" action="/logout">
                         <button class="btn btn-outline-light border-0 p-2" type="submit">Выйти</button>

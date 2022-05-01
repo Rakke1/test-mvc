@@ -8,7 +8,7 @@ use Rakke1\TestMvc\Models\User;
 
 class TodoController extends Controller
 {
-    public function new()
+    public function createNew()
     {
         $userModel = new User();
         $user = $userModel->getByEmail($_POST['email']);
@@ -41,8 +41,25 @@ class TodoController extends Controller
         return json_encode(['status' => false]);
     }
 
-    public function view()
+    public function setDone(int $id)
     {
-        return 'test view';
+        if ($this->isAdmin() === false) {
+            http_response_code(403);
+            return json_encode(['status' => false]);
+        }
+
+        $todoModel = new TodoList();
+        $todo = $todoModel->getById($id);
+
+        if (!$todo) {
+            http_response_code(400);
+            return json_encode(['status' => false]);
+        }
+
+        if ($todoModel->updateById($id, ['status' => TodoList::$STATUS_DONE])) {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
     }
 }

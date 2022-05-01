@@ -44,11 +44,11 @@ abstract class BaseModel
         $notEmptyWhereParams = empty($whereParams) === false;
 
         if ($notEmptyWhereParams) {
-            $query .= ' WHERE';
-
-            foreach ($whereParams as $key => $param) {
-                $query .= " $key=:$key";
-            }
+            $whereSerializedParams = array_map(static function ($param) {
+                return "$param=:$param";
+            }, array_keys($whereParams));
+            $whereQueryString = ' WHERE ' . implode(' AND', $whereSerializedParams);
+            $query .= $whereQueryString;
         }
 
         if ($limit) {
@@ -85,5 +85,20 @@ abstract class BaseModel
         $paramValueReplacement = implode(',', array_fill(0, count($params), '?'));
         $sql = "INSERT INTO $tableName ($paramKeys) VALUES ($paramValueReplacement)";
         return App::$app->db->prepare($sql)->execute($paramValues);
+    }
+
+    protected function updateOne(array $whereParams, array $updatingParams): bool
+    {
+        $tableName = $this::getTableName();
+        $serializeParam = static function ($param) {
+            return "$param=:$param";
+        };
+        $updatingParamKeys = array_map($serializeParam, array_keys($updatingParams));
+        $updatingParamKeys = implode(',', $updatingParamKeys);
+        $whereKeys = array_map($serializeParam, array_keys($whereParams));
+        $whereKeys = implode(' AND', $whereKeys);
+        $sql = "UPDATE $tableName SET $updatingParamKeys WHERE $whereKeys";
+
+        return App::$app->db->prepare($sql)->execute(array_merge($updatingParams, $whereParams));
     }
 }

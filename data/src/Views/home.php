@@ -5,6 +5,8 @@
 /** @var int $limit */
 /** @var int $pageNum */
 /** @var int $totalPageNum */
+/** @var bool $isAuth */
+/** @var bool $isAdmin */
 
 use Rakke1\TestMvc\Models\TodoList;
 
@@ -14,7 +16,7 @@ use Rakke1\TestMvc\Models\TodoList;
     <div class="row mb-1 mt-1 position-relative">
         <div class="col-12 mb-1 mt-1">
             <div class="btn-group float-end" role="group">
-                <button type="button" class="btn btn-primary" onclick="newTodo()">Добавить задачу</button>
+                <button type="button" class="btn btn-primary" onclick="todoApp.new()">Добавить задачу</button>
             </div>
         </div>
     </div>
@@ -28,15 +30,40 @@ use Rakke1\TestMvc\Models\TodoList;
                             <?php echo htmlspecialchars($todo['username'],  ENT_QUOTES, 'UTF-8') .
                                 '(' . htmlspecialchars($todo['email'],  ENT_QUOTES, 'UTF-8') . ')'?>
                         </h5>
-                        <p class="card-text"><?php echo htmlspecialchars($todo['todo'],  ENT_QUOTES, 'UTF-8') ?></p>
+                        <p class="card-text">
+                            <?php echo htmlspecialchars($todo['todo'],  ENT_QUOTES, 'UTF-8') ?>
+                        </p>
                     </div>
                     <div class="card-footer">
-                        <?php if ($todo['status'] === TodoList::$STATUS_DONE): ?>
-                            <span class="badge bg-success">выполнено</span>
+                        <?php if ($isAdmin): ?>
+                            <div class="btn-toolbar">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-primary me-2">Редактировать</button>
+                                    <?php if ((int)$todo['status'] !== TodoList::$STATUS_DONE): ?>
+                                        <button
+                                            class="btn btn-outline-success me-2"
+                                            onclick="todoApp.setDone(<?php echo $todo['ID'] ?>)"
+                                        >
+                                            Выполнено
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         <?php endif; ?>
-                        <?php if ($todo['was_edit_admin']): ?>
-                            <span class="badge bg-primary">отредактировано администратором</span>
-                        <?php endif; ?>
+
+                        <div class="row mt-1" role="group">
+                            <?php if ((int)$todo['status'] === TodoList::$STATUS_DONE): ?>
+                                <div class="col-2">
+                                    <span class="badge bg-success">выполнено</span>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($todo['was_edit_admin']): ?>
+                                <div class="col-7">
+                                    <span class="badge bg-primary">отредактировано администратором</span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,7 +123,7 @@ use Rakke1\TestMvc\Models\TodoList;
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="saveTodo()">Сохранить</button>
+                <button type="button" class="btn btn-success" onclick="todoApp.save()">Сохранить</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>

@@ -36,6 +36,15 @@ class TodoList extends BaseModel
         return [];
     }
 
+    public function getById(int $id)
+    {
+        $preparedPdo = $this->prepareSelect([
+            'id' => $id,
+        ]);
+
+        return $this->fetchOne($preparedPdo);
+    }
+
     public function loadParams(array $params): void
     {
         $this->user_id = $params['user_id'] ?? '';
@@ -51,5 +60,10 @@ class TodoList extends BaseModel
             'status'         => $this->status,
             'was_edit_admin' => $this->wasEditAdmin
         ]);
+    }
+
+    public function updateById(int $id, array $params)
+    {
+        return $this->updateOne(['ID' => $id], $params);
     }
 }

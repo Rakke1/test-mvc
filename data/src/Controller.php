@@ -2,6 +2,8 @@
 
 namespace Rakke1\TestMvc;
 
+use Rakke1\TestMvc\Models\User;
+
 class Controller
 {
     public function render($view, $params = []): string
@@ -13,6 +15,12 @@ class Controller
     {
         header('Location: ' . $path);
         exit();
+    }
+
+    public function isAuth(): bool
+    {
+        $userId = $this->getUserId();
+        return isset($userId);
     }
 
     public function setUserId(string $user_id): void
@@ -28,5 +36,22 @@ class Controller
     public function getUserId()
     {
         return $_SESSION['user_id'] ?? null;
+    }
+
+    public function getUser()
+    {
+        $userId = $this->getUserId();
+        if ($userId) {
+            return (new User())->getById($userId);
+        }
+
+        return null;
+    }
+
+    public function isAdmin(): bool
+    {
+        $user = $this->getUser();
+        $userRole = $user['role'] ?? null;
+        return isset($userRole) && (int)$userRole === User::ROLE_ADMIN;
     }
 }
