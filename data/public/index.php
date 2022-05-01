@@ -19,4 +19,6 @@ $app->router->add(new Route('loginPost', '/login', [SiteController::class, 'logi
 $app->router->add(new Route('logout', '/logout', [SiteController::class, 'logoutPost'], ['POST']));
 $app->router->add(new Route('newTodo', '/todo', [TodoController::class, 'createNew'], ['POST']));
 $app->router->add(new Route('doneTodo', '/todoDone', [TodoController::class, 'setDone'], ['POST']));
+$app->router->add(new Route('getTodo', '/todo', [TodoController::class, 'view'], ['GET']));
+$app->router->add(new Route('updateTodo', '/updateTodo', [TodoController::class, 'update'], ['POST']));
 $app->run();

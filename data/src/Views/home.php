@@ -9,6 +9,7 @@
 /** @var bool $isAdmin */
 
 use Rakke1\TestMvc\Models\TodoList;
+use Rakke1\TestMvc\Helpers\HtmlHelper;
 
 ?>
 
@@ -27,18 +28,23 @@ use Rakke1\TestMvc\Models\TodoList;
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <?php echo htmlspecialchars($todo['username'],  ENT_QUOTES, 'UTF-8') .
-                                '(' . htmlspecialchars($todo['email'],  ENT_QUOTES, 'UTF-8') . ')'?>
+                            <?php echo HtmlHelper::encode($todo['username']) .
+                                '(' . HtmlHelper::encode($todo['email']) . ')'?>
                         </h5>
                         <p class="card-text">
-                            <?php echo htmlspecialchars($todo['todo'],  ENT_QUOTES, 'UTF-8') ?>
+                            <?php echo HtmlHelper::encode($todo['todo']) ?>
                         </p>
                     </div>
                     <div class="card-footer">
                         <?php if ($isAdmin): ?>
                             <div class="btn-toolbar">
                                 <div class="btn-group" role="group">
-                                    <button class="btn btn-outline-primary me-2">Редактировать</button>
+                                    <button
+                                        class="btn btn-outline-primary me-2"
+                                        onclick="todoApp.edit(<?php echo $todo['ID'] ?>)"
+                                    >
+                                        Редактировать
+                                    </button>
                                     <?php if ((int)$todo['status'] !== TodoList::$STATUS_DONE): ?>
                                         <button
                                             class="btn btn-outline-success me-2"
@@ -102,13 +108,11 @@ use Rakke1\TestMvc\Models\TodoList;
 <div class="modal fade" tabindex="-1" id="todoModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Новая задача</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body">
                 <form id="newTodoForm" method="post" action="/todo">
@@ -120,10 +124,41 @@ use Rakke1\TestMvc\Models\TodoList;
                     <textarea class="form-control" rows="4" name="todo" id="todo" required></textarea>
                 </form>
             </div>
-
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="todoApp.save()">Сохранить</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="todoEditModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Редактирование задачи</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="editTodoForm" class="needs-validation was-validated" method="post" action="/todo" novalidate>
+                    <label class="form-label" for="username">Имя</label>
+                    <input class="form-control" disabled type="text" name="username" id="username" required/>
+                    <label class="form-label" for="email">E-mail</label>
+                    <input class="form-control" disabled type="email" id="email" name="email" required/>
+
+                    <label class="form-label" for="todo">Текст</label>
+                    <textarea class="form-control" rows="4" name="todo" id="todo" required></textarea>
+                    <div class="invalid-feedback">
+                        Пожалуйста укажите Текст
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="todoApp.update()">Сохранить</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>

@@ -62,4 +62,45 @@ class TodoController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+    public function update(int $id)
+    {
+        if ($this->isAdmin() === false) {
+            http_response_code(403);
+            return json_encode(['status' => false]);
+        }
+
+        $todoModel = new TodoList();
+        $todo = $todoModel->getById($id);
+        $todoText = $_POST['todo'] ?? '';
+
+        if (!$todo || !$todoText) {
+            http_response_code(400);
+            return json_encode(['status' => false]);
+        }
+
+        if ($todoModel->updateById($id, ['todo' => $todoText])) {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function view(int $id)
+    {
+
+        $todoModel = new TodoList();
+        $todo = $todoModel->getById($id);
+        if (!$todo) {
+            http_response_code(400);
+            return json_encode(['status' => false]);
+        }
+
+        $userModel = new User();
+        $user = $userModel->getById($todo['user_id']);
+        $todo['username'] = $user['username'];
+        $todo['email'] = $user['email'];
+
+        return json_encode($todo);
+    }
 }

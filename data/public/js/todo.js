@@ -1,12 +1,8 @@
 var todoApp = {
     new: function()
     {
-        var modal = new bootstrap.Modal(document.getElementById('todoModal'))
+        var modal = new bootstrap.Modal(document.getElementById('todoModal'));
         modal.show();
-    },
-
-    edit: function (todoId) {
-
     },
 
     save: async function() {
@@ -46,13 +42,45 @@ var todoApp = {
         }
     },
 
+    edit: async function (todoId) {
+        var todo = await this.getTodo(todoId);
+        var form = document.getElementById('editTodoForm');
+        form['username'].setAttribute('value', todo.username);
+        form['email'].setAttribute('value', todo.email);
+        form['todo'].value = todo.todo;
+        form.setAttribute('data-id', todo.ID);
+        var modal = new bootstrap.Modal(document.getElementById('todoEditModal'));
+        modal.show();
+    },
+
+    update: async function update() {
+        var form = document.getElementById('editTodoForm');
+        const todoId = form.getAttribute('data-id');
+
+        if (!form.checkValidity()) {
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('todo', form['todo'].value);
+
+        let response = await fetch('/updateTodo?id=' + todoId, {
+            method: 'POST',
+            body: formData,
+        });
+        let result = await response.json();
+
+        if (result.status) {
+            alert('Задача обновлена');
+        } else {
+            alert('Произошла ошибка');
+        }
+    },
+
     setDone: async function setDone(todoId)
     {
         let response = await fetch('/todoDone?id=' + todoId, {
             method: 'POST',
-            data: {
-                'status': 1
-            }
         });
         let result = await response.json();
 
@@ -63,4 +91,16 @@ var todoApp = {
         }
     },
 
+    getTodo: async function getTodo(todoId)
+    {
+        let response = await fetch('/todo?id=' + todoId, {
+            method: 'GET',
+        });
+        let result = await response.json();
+        if (result) {
+            return result;
+        } else {
+            alert('Произошла ошибка');
+        }
+    }
 }
