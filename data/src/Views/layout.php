@@ -1,4 +1,5 @@
 <?php
+    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
 <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -9,10 +10,10 @@
         <a class="navbar-brand" href="#">TodoList</a>
         <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link <?php echo $currentPath === '/' ? 'active' : ''; ?>" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link <?php echo $currentPath === '/login' ? 'active' : ''; ?>" href="/login">Login</a>
             </li>
         </ul>
     </div>
