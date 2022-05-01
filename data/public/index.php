@@ -7,9 +7,8 @@ use Rakke1\TestMvc\Route;
 use Rakke1\TestMvc\Controllers\SiteController;
 use Rakke1\TestMvc\Controllers\TodoController;
 
-require_once __DIR__ . '/vendor/autoload.php';
-
-$rootDir = dirname(__DIR__) . '/html';
+$rootDir = dirname(__DIR__);
+require_once $rootDir . '/vendor/autoload.php';
 
 $app = new App($rootDir);
 $app->router->add(new Route('home', '/', [SiteController::class, 'home']));

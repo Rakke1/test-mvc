@@ -4,9 +4,9 @@ use Rakke1\TestMvc\App;
 use Rakke1\TestMvc\Models\TodoList;
 use Rakke1\TestMvc\Models\User;
 
-require_once __DIR__.'/vendor/autoload.php';
-
-$app = new App(dirname(__DIR__) . '/html');
+$rootDir = dirname(__DIR__);
+require_once $rootDir . '/vendor/autoload.php';
+$app = new App($rootDir);
 
 function createUserTable(PDO $db): void
 {
