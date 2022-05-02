@@ -69,9 +69,13 @@ var todoApp = {
             body: formData,
         });
         let result = await response.json();
+        let code = await response.status;
 
         if (result.status) {
             alert('Задача обновлена');
+        } else if (code === 403) {
+            alert('Необходимо авторизоваться');
+            window.location.replace('/login');
         } else {
             alert('Произошла ошибка');
         }
