@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors',1);
+ini_set('display_errors',0);
 ini_set('session.save_path', realpath(dirname(__DIR__) . '/sessions'));
 session_start();
 
