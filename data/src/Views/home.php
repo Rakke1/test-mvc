@@ -14,8 +14,24 @@ use Rakke1\TestMvc\Helpers\HtmlHelper;
 ?>
 
 <div class="container">
-    <div class="row mb-1 mt-1 position-relative">
-        <div class="col-12 mb-1 mt-1">
+    <div class="row mb-3 mt-3 position-relative">
+        <div class="col-md-3">
+            <label>Сортировка</label>
+            <select class="form-select" id="sortBy" aria-label="Sort select">
+                <option selected>Выбрать</option>
+                <option value="username">Имя</option>
+                <option value="email">E-mail</option>
+                <option value="status">Статус</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Порядок</label>
+            <select class="form-select" id="sortOrder" aria-label="Sort order select">
+                <option selected value="ASC">По возрастанию</option>
+                <option value="DESC">По убыванию</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-1 mt-1">
             <div class="btn-group float-end" role="group">
                 <button type="button" class="btn btn-primary" onclick="todoApp.new()">Добавить задачу</button>
             </div>
@@ -59,13 +75,13 @@ use Rakke1\TestMvc\Helpers\HtmlHelper;
 
                         <div class="row mt-1" role="group">
                             <?php if ((int)$todo['status'] === TodoList::$STATUS_DONE): ?>
-                                <div class="col-2">
+                                <div class="col-3 m-0">
                                     <span class="badge bg-success">выполнено</span>
                                 </div>
                             <?php endif; ?>
 
                             <?php if ($todo['was_edit_admin']): ?>
-                                <div class="col-7">
+                                <div class="col-8 m-0 p-0">
                                     <span class="badge bg-primary">отредактировано администратором</span>
                                 </div>
                             <?php endif; ?>

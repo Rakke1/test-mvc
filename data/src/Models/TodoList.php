@@ -2,10 +2,14 @@
 
 namespace Rakke1\TestMvc\Models;
 
+use Rakke1\TestMvc\App;
+
 class TodoList extends BaseModel
 {
     public static int $STATUS_NOT_DONE = 0;
     public static int $STATUS_DONE = 1;
+    public static array $SORTING_FIELDS = ['username', 'status', 'email'];
+    public static array $SORTING_ORDERS = ['ASC', 'DESC'];
 
     protected string $todo;
     protected int $user_id;
@@ -17,23 +21,22 @@ class TodoList extends BaseModel
         return 'todo_list';
     }
 
-    public function getAll($limit = 3, $offset = 0): array
+    public function getAll($limit = 3, $offset = 0, ?string $sortBy = null, ?string $sortOrder = 'ASC'): array
     {
-        $preparedPdo = $this->prepareSelect([], $limit, $offset);
+        $userTable = User::getTableName();
+        $todoTable = self::getTableName();
+        $query = "SELECT * FROM $todoTable LEFT JOIN $userTable ON $todoTable.user_id=$userTable.id";
+        if (in_array($sortBy, self::$SORTING_FIELDS, true)) {
+            $query .= " ORDER BY $sortBy";
+            if (in_array($sortOrder, self::$SORTING_ORDERS, true)) {
+                $query .= " $sortOrder";
+            }
+        }
+        $query .= " LIMIT $limit OFFSET $offset";
+        $preparedPdo = App::$app->db->prepare($query);
         $todos = $this->fetchAll($preparedPdo);
 
-        if (is_array($todos)) {
-            $userModel = new User();
-            foreach ($todos as &$todo) {
-                $user = $userModel->getById($todo['user_id']);
-                $todo['username'] = $user['username'];
-                $todo['email'] = $user['email'];
-            }
-
-            return $todos;
-        }
-
-        return [];
+        return is_array($todos) ? $todos : [];
     }
 
     public function getById(int $id)

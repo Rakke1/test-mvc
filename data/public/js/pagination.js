@@ -10,21 +10,13 @@ var pagination = {
     },
 
     toPage: function toPage(page) {
-        const params = this.getParams();
+        const params = urlParams.get();
         params.set('page', page);
-        this.updateParams(params);
-    },
-
-    getParams: function getParams() {
-        return new URLSearchParams(window.location.search);
-    },
-
-    updateParams: function updateParams(params) {
-        window.location.search = params.toString();
+        urlParams.update(params);
     },
 
     getPage: function getPage() {
-        const params = this.getParams();
+        const params = urlParams.get();
         const page = parseInt(params.get("page"));
 
         if (!page) {

@@ -37,7 +37,8 @@ abstract class BaseModel
     protected function prepareSelect(
         array $whereParams = [],
         ?int $limit = null,
-        ?int $offset = null): PDOStatement
+        ?int $offset = null,
+    ): PDOStatement
     {
         $tableName = $this::getTableName();
         $query = "SELECT * FROM $tableName";

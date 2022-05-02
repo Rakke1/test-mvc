@@ -8,12 +8,15 @@ use Rakke1\TestMvc\Models\User;
 
 class SiteController extends Controller
 {
-    public function home(int $pageNum = 1): string
+    public function home(): string
     {
+        $pageNum = (int) ($_GET['page'] ?? 1);
+        $sortBy = (string) ($_GET['sortBy'] ?? '');
+        $sortOrder = (string) ($_GET['sortOrder'] ?? '');
         $limit = 3;
         $offset = $limit * ($pageNum - 1);
         $todoListModel = new TodoList();
-        $todoList = $todoListModel->getAll($limit, $offset);
+        $todoList = $todoListModel->getAll($limit, $offset, $sortBy, $sortOrder);
         $todoNum = $todoListModel->countAll();
         $totalPageNum = (int)ceil((float)$todoNum / $limit);
         $isAuth = $this->isAuth();
