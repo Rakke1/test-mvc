@@ -79,7 +79,7 @@ class TodoController extends Controller
             return json_encode(['status' => false]);
         }
 
-        if ($todoModel->updateById($id, ['todo' => $todoText])) {
+        if ($todoModel->updateById($id, ['todo' => $todoText, 'was_edit_admin' => true])) {
             return json_encode(['status' => true]);
         }
 
