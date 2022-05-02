@@ -131,13 +131,22 @@ use Rakke1\TestMvc\Helpers\HtmlHelper;
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form id="newTodoForm" method="post" action="/todo">
+                <form id="newTodoForm" class="needs-validation" method="post" action="/todo" novalidate>
                     <label class="form-label" for="username">Имя</label>
                     <input class="form-control" type="text" name="username" id="username" required/>
+                    <div class="invalid-feedback">
+                        Пожалуйста укажите Имя
+                    </div>
                     <label class="form-label" for="email">E-mail</label>
                     <input class="form-control" type="email" id="email" name="email" required/>
+                    <div class="invalid-feedback">
+                        Пожалуйста укажите E-mail
+                    </div>
                     <label class="form-label" for="todo">Текст</label>
                     <textarea class="form-control" rows="4" name="todo" id="todo" required></textarea>
+                    <div class="invalid-feedback">
+                        Пожалуйста укажите Текст
+                    </div>
                 </form>
             </div>
             <!-- Modal footer -->

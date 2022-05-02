@@ -12,20 +12,13 @@ var todoApp = {
         let email = formData.get('email');
         let todo = formData.get('todo');
 
-        if (username.trim() === '') {
-            alert('Поле Имя не заполнено');
-            return;
-        }
-        if (email.trim() === '') {
-            alert('Поле E-mail не заполнено');
-            return;
-        }
-        if (validateEmail(email.trim()) !== true) {
-            alert('Поле E-mail не валидно');
-            return;
-        }
-        if (todo.trim() === '') {
-            alert('Поле Текст не заполнено');
+        newForm.classList.add('was-validated');
+        if (newForm.checkValidity()) {
+            if (validateEmail(email.trim()) !== true) {
+                alert('Поле E-mail не валидно');
+                return;
+            }
+        } else {
             return;
         }
 
