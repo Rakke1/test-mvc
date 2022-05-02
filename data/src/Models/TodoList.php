@@ -26,13 +26,13 @@ class TodoList extends BaseModel
         $userTable = User::getTableName();
         $todoTable = self::getTableName();
         $query = "SELECT * FROM $todoTable td LEFT JOIN (SELECT ID as UID, username, email FROM $userTable) as u ON td.user_id=u.UID";
+        $query .= " GROUP BY td.ID";
         if (in_array($sortBy, self::$SORTING_FIELDS, true)) {
             $query .= " ORDER BY $sortBy";
             if (in_array($sortOrder, self::$SORTING_ORDERS, true)) {
                 $query .= " $sortOrder";
             }
         }
-        $query .= " GROUP BY td.ID";
         $query .= " LIMIT $limit OFFSET $offset";
         $preparedPdo = App::$app->db->prepare($query);
         $todos = $this->fetchAll($preparedPdo);
