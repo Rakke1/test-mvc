@@ -181,4 +181,6 @@ use Rakke1\TestMvc\Helpers\HtmlHelper;
     </div>
 </div>
 
+<script src="/js/sorting.js"></script>
+
 <?php
